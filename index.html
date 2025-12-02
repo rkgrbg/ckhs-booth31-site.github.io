@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>31攤 質樸莊園 | 建中127週年校慶</title>
+  <style>
+    /* ===== Reset & base ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC",
+        "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: #1f2933;
+      -webkit-font-smoothing: antialiased;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(255, 255, 255, 0.75), transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(255, 255, 255, 0.65), transparent 55%),
+        repeating-linear-gradient(
+          90deg,
+          #f4ede1 0px,
+          #f4ede1 24px,
+          #efe6d7 24px,
+          #efe6d7 48px
+        );
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(180, 207, 224, 0.55), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(190, 214, 203, 0.5), transparent 60%);
+      mix-blend-mode: screen;
+      opacity: 0.5;
+      pointer-events: none;
+      animation: moveGlow 18s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ===== Layout ===== */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    section {
+      padding: 3rem 1.25rem 2.5rem;
+      position: relative;
+    }
+
+    /* ===== Floating light particles ===== */
+    .lights {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .light-dot {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent 65%);
+      opacity: 0.13;
+      animation: floatLight 24s linear infinite;
+    }
+    .light-dot:nth-child(1) { top: 10%; left: -10%; animation-duration: 26s; }
+    .light-dot:nth-child(2) { top: 60%; left: 80%; animation-duration: 22s; }
+    .light-dot:nth-child(3) { top: 85%; left: 15%; animation-duration: 30s; }
+    .light-dot:nth-child(4) { top: 30%; left: 55%; animation-duration: 28s; }
+
+    /* ===== Top bar ===== */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(
+        90deg,
+        rgba(250, 252, 255, 0.96),
+        rgba(238, 244, 248, 0.92)
+      );
+      border-bottom: 1px solid rgba(209, 217, 224, 0.9);
+    }
+    .top-bar-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.55rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .top-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #355468;
+      white-space: nowrap;
+    }
+    .top-nav {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+    .chip-link {
+      flex-shrink: 0;
+      font-size: 0.8rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(88, 130, 146, 0.28);
+      background: rgba(255, 255, 255, 0.92);
+      color: #426676;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: background 0.25s ease, transform 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+    .chip-link::before {
+      content: "•";
+      font-size: 0.7rem;
+    }
+    .chip-link:hover {
+      background: rgba(227, 238, 243, 0.98);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(101, 133, 148, 0.2);
+    }
+    .chip-link--primary {
+      background: linear-gradient(135deg, #435f6f, #82a9b1);
+      color: #f8fcff;
+      border-color: transparent;
+      box-shadow: 0 6px 18px rgba(70, 104, 120, 0.5);
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      padding-top: 2.4rem;
+      padding-bottom: 2.4rem;
+    }
+    .hero-card {
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.96),
+        rgba(238, 243, 246, 0.98)
+      );
+      border-radius: 24px;
+      padding: 1.8rem 1.5rem 1.7rem;
+      box-shadow: 0 18px 40px rgba(91, 113, 133, 0.25);
+      border: 1px solid rgba(208, 217, 227, 0.9);
+      position: relative;
+      overflow: hidden;
+      animation: floatCard 8s ease-in-out infinite alternate;
+    }
+    .hero-card::before,
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent 65%);
+      opacity: 0.7;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .hero-card::before {
+      width: 220px;
+      height: 220px;
+      top: -60px;
+      right: -80px;
+      animation: swirlLight 22s linear infinite;
+    }
+    .hero-card::after {
+      width: 160px;
+      height: 160px;
+      bottom: -70px;
+      left: -40px;
+      animation: swirlLight 18s linear infinite reverse;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .tagline {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #7b929f;
+      margin-bottom: 0.35rem;
+    }
+    .hero-title {
+      font-size: 1.6rem;
+      line-height: 1.3;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+      color: #2f4554;
+    }
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: #52606d;
+      margin-bottom: 1.1rem;
+    }
+    .hero-meta {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0.8rem;
+      margin-bottom: 1.15rem;
+      font-size: 0.82rem;
+    }
+    .meta-item {
+      padding: 0.6rem 0.7rem;
+      border-radius: 14px;
+      background: rgba(244, 249, 252, 0.96);
+      border: 1px solid rgba(210, 221, 228, 0.9);
+    }
+    .meta-label {
+      font-size: 0.7rem;
+      color: #7b8c98;
+    }
+    .meta-value {
+      margin-top: 0.1rem;
+      font-weight: 700;
+      color: #324454;
+    }
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+    .btn-primary {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 0.6rem 1.15rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #557f92, #8ab6c1);
+      color: #f9fdff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 26px rgba(74, 118, 136, 0.55);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: transform 0.22s ease, box-shadow 0.22s ease,
+        filter 0.22s ease;
+    }
+    .btn-primary span.icon {
+      font-size: 1rem;
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 14px 32px rgba(74, 118, 136, 0.65);
+      filter: brightness(1.03);
+    }
+    .btn-primary:active {
+      transform: translateY(0) scale(0.99);
+      box-shadow: 0 6px 18px rgba(74, 118, 136, 0.6);
+    }
+    .hero-note {
+      font-size: 0.75rem;
+      color: #6b7a86;
+    }
+
+    /* ===== Section heading ===== */
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #355468;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .section-title::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #7da1a8, #c3d5d9);
+      box-shadow: 0 6px 14px rgba(126, 157, 164, 0.5);
+    }
+    .section-subtitle {
+      font-size: 0.86rem;
+      color: #6b7a86;
+      margin-bottom: 1.4rem;
+    }
+
+    /* ===== Card base ===== */
+    .card {
+      border-radius: 22px;
+      background: rgba(248, 251, 253, 0.96);
+      box-shadow: 0 10px 25px rgba(140, 160, 171, 0.28);
+      padding: 1.3rem 1.25rem 1.35rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        140deg,
+        rgba(255, 255, 255, 0.3),
+        transparent 50%
+      );
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .card:hover::before {
+      opacity: 1;
+    }
+    .card--soft {
+      box-shadow: 0 8px 22px rgba(135, 155, 166, 0.2);
+      background: rgba(252, 253, 255, 0.96);
+    }
+
+    /* ===== Quick info ===== */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+    .quick-item-label {
+      font-size: 0.75rem;
+      color: #7b8c98;
+      margin-bottom: 0.2rem;
+    }
+    .quick-item-value {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #323f4b;
+    }
+
+    /* ===== Booth 31 highlight ===== */
+    .booth-highlight {
+      background: linear-gradient(
+        135deg,
+        rgba(94, 131, 146, 0.98),
+        rgba(62, 98, 112, 1)
+      );
+      color: #f5fbff;
+      box-shadow: 0 18px 40px rgba(47, 77, 91, 0.65);
+    }
+    .booth-highlight::before {
+      display: none;
+    }
+    .booth-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 1.1rem;
+      align-items: center;
+    }
+    @media (max-width: 640px) {
+      .booth-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    .booth-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.32rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(245, 252, 255, 0.1);
+      border: 1px solid rgba(228, 242, 249, 0.8);
+      color: #e2f4ff;
+      font-size: 0.78rem;
+      margin-bottom: 0.4rem;
+      box-shadow: 0 6px 16px rgba(31, 51, 63, 0.6);
+    }
+    .booth-main-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #f7fbff;
+      margin-bottom: 0.2rem;
+    }
+    .booth-class {
+      font-size: 0.9rem;
+      color: #d6e6f0;
+      margin-bottom: 0.75rem;
+    }
+    .booth-desc {
+      font-size: 0.86rem;
+      color: #f0f6fb;
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+    .booth-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .pill {
+      font-size: 0.72rem;
+      padding: 0.28rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(241, 248, 252, 0.15);
+      color: #f5fbff;
+      border: 1px solid rgba(228, 242, 249, 0.9);
+    }
+    .booth-number-card {
+      justify-self: end;
+      border-radius: 22px;
+      background: rgba(247, 250, 252, 0.98);
+      padding: 1.2rem 1.1rem 1.25rem;
+      min-width: 150px;
+      text-align: center;
+      box-shadow: 0 10px 28px rgba(20, 41, 52, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+    .booth-number-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(132, 169, 183, 0.18), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(195, 207, 216, 0.22), transparent 60%);
+      opacity: 0.9;
+      pointer-events: none;
+      animation: swirlLight 24s linear infinite;
+    }
+    .booth-number-card::after {
+      content: "必逛攤位";
+      position: absolute;
+      top: 0.55rem;
+      right: 0.6rem;
+      font-size: 0.7rem;
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7da1a8, #c3d5d9);
+      color: #123047;
+      font-weight: 700;
+      box-shadow: 0 6px 14px rgba(96, 133, 148, 0.55);
+      z-index: 1;
+    }
+    .booth-number {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      background: linear-gradient(135deg, #435f6f, #8ab6c1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .booth-number-label {
+      font-size: 0.78rem;
+      color: #6b7a86;
+      margin-bottom: 0.3rem;
+      position: relative;
+      z-index: 1;
+    }
+    .booth-location {
+      font-size: 0.8rem;
+      color: #4b5964;
+      line-height: 1.55;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== Schedule ===== */
+    .schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+    }
+    .schedule-item {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.7rem;
+      align-items: flex-start;
+      padding: 0.7rem 0.8rem;
+      border-radius: 16px;
+      background: rgba(248, 251, 253, 0.98);
+      box-shadow: 0 6px 16px rgba(156, 173, 184, 0.22);
+      position: relative;
+      overflow: hidden;
+    }
+    .schedule-item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0.7),
+        transparent 55%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .schedule-item:hover::before {
+      opacity: 1;
+    }
+    .schedule-time {
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: #476779;
+      white-space: nowrap;
+    }
+    .schedule-main {
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+      color: #323f4b;
+    }
+    .schedule-note {
+      font-size: 0.78rem;
+      color: #6b7a86;
+    }
+
+    /* ===== Map / booth area info ===== */
+    .map-points {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.84rem;
+    }
+    .map-points li {
+      padding-left: 1.2rem;
+      position: relative;
+      color: #4b5a65;
+    }
+    .map-points li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.2rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7da1a8, #c3d5d9);
+      box-shadow: 0 0 0 4px rgba(170, 196, 205, 0.5);
+    }
+
+    /* ===== Custom image placeholder ===== */
+    .image-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 18px;
+      border: 2px dashed rgba(120, 148, 159, 0.7);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(207, 220, 226, 0.7), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(227, 235, 239, 0.7), transparent 60%),
+        rgba(243, 247, 250, 0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: #546575;
+      text-align: center;
+      padding: 0 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .image-placeholder::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0)
+      );
+      transform: translateX(-100%);
+      animation: shine 4s ease-in-out infinite;
+    }
+    .small-note {
+      margin-top: 0.6rem;
+      font-size: 0.75rem;
+      color: #7b8c98;
+    }
+
+    /* ===== Notes & footer ===== */
+    .notes-list {
+      padding-left: 1rem;
+      margin: 0.4rem 0 0;
+      font-size: 0.8rem;
+      color: #4b5a65;
+    }
+    .notes-list li + li {
+      margin-top: 0.25rem;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 1.5rem 1rem 2rem;
+      color: #6b7a86;
+    }
+
+    /* ===== Reveal animation for sections ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.9s ease-out forwards;
+      animation-delay: var(--delay, 0s);
+    }
+
+    @media (min-width: 768px) {
+      section {
+        padding-inline: 2.5rem;
+      }
+      .hero-title {
+        font-size: 1.9rem;
+      }
+    }
+
+    /* ===== Animations ===== */
+    @keyframes moveGlow {
+      0% {
+        transform: translate3d(-8%, -6%, 0) scale(1);
+      }
+      100% {
+        transform: translate3d(6%, 4%, 0) scale(1.08);
+      }
+    }
+    @keyframes floatLight {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      100% {
+        transform: translate3d(12%, -16%, 0) scale(1.2);
+      }
+    }
+    @keyframes swirlLight {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes floatCard {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-6px);
+      }
+    }
+    @keyframes shine {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- floating lights layer -->
+  <div class="lights" aria-hidden="true">
+    <div class="light-dot"></div>
+    <div class="light-dot"></div>
+    <div class="light-dot"></div>
+    <div class="light-dot"></div>
+  </div>
+
+  <!-- ===== Top sticky bar ===== -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <div class="top-title">建中 127 週年校慶園遊會</div>
+      <nav class="top-nav" aria-label="主導覽">
+        <a class="chip-link chip-link--primary" href="#booth-31">首頁</a>
+        <a class="chip-link" href="#schedule">各種活動</a>
+        <a class="chip-link" href="#map">攤位與校園地圖重點</a>
+        <a class="chip-link" href="#custom-image">攤位地圖資訊</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <div class="hero-card reveal" style="--delay:0s">
+        <div class="hero-inner">
+          <div class="tagline">CKHS 127th ANNIVERSARY</div>
+          <h1 class="hero-title">建國中學 127 週年校慶園遊會</h1>
+          <p class="hero-subtitle">建中風采百廿七・紅樓才子展大器</p>
+
+          <div class="hero-meta">
+            <div class="meta-item">
+              <div class="meta-label">日期 Date</div>
+              <div class="meta-value">12 / 06（六）</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">園遊會時間</div>
+              <div class="meta-value">10:00 – 14:30</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">地址</div>
+              <div class="meta-value">臺北市中正區南海路56號 建國中學</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">重點</div>
+              <div class="meta-value">創意攤位・表演活動・校友齊聚</div>
+            </div>
+          </div>
+
+          <div class="hero-cta">
+            <button class="btn-primary" data-scroll-target="#booth-31">
+              <span class="icon">🎈</span>
+              來逛逛 31 號攤~質樸莊園
+            </button>
+            <span class="hero-note">開放時間 : 10:00 - 14:00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Booth 31 highlight ===== -->
+    <section id="booth-31" class="reveal" style="--delay:0.25s">
+      <div class="booth-highlight card">
+        <div class="booth-inner">
+          <div>
+            <div class="booth-badge">
+              <span>🎈 31 號攤位</span> <span>男友不管 男模會館 ღ</span>
+            </div>
+            <h2 class="booth-main-title">質樸莊園</h2>
+            <div class="booth-class">209 班攤位｜左主幹道 & 後門直走就看得到</div>
+            <p class="booth-desc">
+              想在熱鬧校慶裡，遇見一些歡樂、搞笑的男僕嗎？  
+              歡迎走進 31 號攤位「質樸莊園」，和 209 班一起在男模會館裡，
+              享受簡單卻用心的園遊會時光。
+              有按摩（應該）、上車舞（...）、過來坐下（...*100），
+              還有烤香腸、古早味小零食、奶茶等小點心等你來買~~
+            </p>
+            <div class="booth-pills">
+              <span class="pill">班級：209 班</span>
+              <span class="pill">攤位編號：31</span>
+              <span class="pill">名稱：質樸莊園</span>
+              <span class="pill">位置：後門進去後第一眼看到的那條攤位，或正門進去後最左邊的一條攤位（要繞一下）</span>
+            </div>
+          </div>
+
+          <aside class="booth-number-card" aria-label="質樸莊園攤位資訊">
+            <div class="booth-number">31</div>
+            <div class="booth-number-label">攤位編號</div>
+            <div class="booth-location">
+              ・校園地圖列表：<strong>209 班｜質樸莊園</strong><br />
+              ・大約位置：面向典禮台右方主走道區<br />
+              看到 31 就是我們，記得來打卡！
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+        <!-- ===== Quick info ===== -->
+    <section id="info" class="reveal" style="--delay:0.15s">
+      <h2 class="section-title">攤位時間</h2>
+      <p class="section-subtitle">
+        只有在下列時間攤位才有開放喔！
+      </p>
+      <div class="card card--soft">
+        <div class="quick-grid">
+          <div>
+            <div class="quick-item-label">10:00 - 12:00</div>
+            <div class="quick-item-value">第一階段開放時間（第一波男僕，人比較少）</div>
+          </div>
+          <div>
+            <div class="quick-item-label">12:00 - 14:30</div>
+            <div class="quick-item-value">第二階段開放時間（第二波男僕，人比較多）</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Schedule detail ===== -->
+    <section id="schedule" class="reveal" style="--delay:0.35s">
+      <h2 class="section-title">12/6 校慶當天流程</h2>
+      <p class="section-subtitle">
+        以下為與園遊會直接相關的重點時段，方便你安排逛攤與集合時間。
+      </p>
+      <div class="schedule-list">
+        <article class="schedule-item">
+          <div class="schedule-time">08:20 – 10:00</div>
+          <div>
+            <div class="schedule-main">慶祝大會開幕典禮</div>
+            <div class="schedule-note">樂旗隊表演、黑衫軍橄欖球表演及來賓祝福致詞。</div>
+          </div>
+        </article>
+        <article class="schedule-item">
+          <div class="schedule-time">10:00 – 14:30</div>
+          <div>
+            <div class="schedule-main">創意園遊會</div>
+            <div class="schedule-note">
+              全校攤位正式開張！歡迎優先前往
+              <strong>31 號「質樸莊園」</strong> 光顧。
+            </div>
+          </div>
+        </article>
+        <article class="schedule-item">
+          <div class="schedule-time">10:20 – 11:00</div>
+          <div>
+            <div class="schedule-main">高一高二班際大隊接力決賽（田徑場）</div>
+            <div class="schedule-note">
+              想看人跑步的話，你要去也可以。主要是告訴你這段時間不能走田徑場94ㄌ。
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Map / booth hints ===== -->
+    <section id="map" class="reveal" style="--delay:0.45s">
+      <h2 class="section-title">攤位與校園地圖重點</h2>
+      <p class="section-subtitle">
+        校園地圖上，各班攤位以編號 1–48 標示，31 號攤位為 209 班「質樸莊園」，
+        位在典禮台前方主走道區，沿路都是人氣攤位。
+      </p>
+      <div class="card card--soft">
+        <ul class="map-points">
+          <li>園遊會主要範圍：典禮台前的主走道兩側，以及各棟教學大樓周邊。</li>
+          <li>從正門進校園後，往典禮台方向走，依照地圖編號即可找到各班攤位。</li>
+          <li><strong>31 號「質樸莊園」</strong> 在主走道中段。</li>
+          <li>周邊還有其他人氣攤位與社團活動，可沿著攤位編號一路逛下去。</li>
+          <li>若有學校提供的完整攤位地圖圖片，在下方的「攤位地圖資訊」區塊中。</li>
+        </ul>
+      </div>
+    </section>
+
+
+    <section id="custom-image" class="reveal" style="--delay:0.55s">
+      <h2 class="section-title">攤位地圖資訊</h2>
+      <p class="section-subtitle">
+        各攤位名稱，地圖位置如下。
+      </p>
+
+      <img src="17636957191597dygw6oT.jpg" alt="攤位地圖資訊" />
+
+      <p class="small-note">
+        ※ 請依實際現場情況為準。
+      </p>
+    </section>
+
+    <!-- ===== Notes & reminders ===== -->
+    <section id="notes" class="reveal" style="--delay:0.65s">
+      <h2 class="section-title">小提醒＆安全須知</h2>
+      <p class="section-subtitle">為了讓園遊會順利又安全，請大家一起配合：</p>
+      <ul class="notes-list">
+        <li>請勿攜帶槍、砲、彈、藥等危險物品，並請勿與人起衝突。</li>
+        <li>盡量自備環保餐具，響應減塑，許多攤位<strong>不會</strong>提供自備餐具的小優惠。</li>
+        <li>注意10:00才開始，不要太早到，並切記關注天氣預報，建議攜帶雨傘以防萬一。</li>
+        <li>逛攤時注意自身與他人之人身與財產安全，切記重要財務應謹慎保管。防範小偷，人人有責。</li>
+        <li>請注意31號攤的男僕<strong>不會很好看</strong>，食物<strong>不會很好吃</strong>，甚至應該說<strong>不好看、傷眼睛</strong>和<strong>也沒有那麼難吃</strong>，請做好心理準備，如因自身因素所產生之失望、噁心、厭惡或嘔吐等情形，我方<strong>不提供</strong>任何損害賠償之可能。</li>
+        <li>班聯會有賣一個據說蠻有名的韓國品牌聯名的小熊，我覺得很醜，長得很欠揍，不過各位可以視需求購買，切記不會升值，不要多買，賣不掉。</li>
+        <li>請多元尊重包容各種不同的人<strong>（醜男除外）</strong>，發揮台灣愛心♡</li>
+        <li>注意，<strong>我不會去</strong>。</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    建國中學 127 週年校慶園遊會｜209 班 質樸莊園 31 號攤位見！<br />
+    （本頁為非官方粉絲製作單頁式資訊網站，不代表任何組織立場）<br />
+    <a href="https://www.ck.tp.edu.tw/nss/p/ckcelebration"
+       style="color:#4a6f82; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px;">
+        建中校慶官方網站
+    </a>
+     | 
+    <a href="https://www.gracegift.com.tw/products/classification/1234"
+       style="color:#4a6f82; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px;">
+        班聯會小熊線上販賣網站
+    </a><br /><br />
+    Copyright © 2025 rkgrbg. All rights reserved.
+  </footer>
+</div>
+
+<script>
+  function smoothScrollTo(targetSelector) {
+    const el = document.querySelector(targetSelector);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({
+      top,
+      behavior: "smooth"
+    });
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      const href = this.getAttribute("href");
+      if (!href || href === "#") return;
+      e.preventDefault();
+      smoothScrollTo(href);
+    });
+  });
+
+  document.querySelectorAll("[data-scroll-target]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const target = this.getAttribute("data-scroll-target");
+      if (target) smoothScrollTo(target);
+    });
+  });
+</script>
+</body>
+</html>
